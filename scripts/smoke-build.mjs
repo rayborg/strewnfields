@@ -39,6 +39,23 @@ for (const id of recordIds) {
 if (!explore.includes('data-map-fallback')) {
   throw new Error('Explore output is missing the server-rendered map fallback');
 }
+
+const home = await readFile(new URL('index.html', root), 'utf8');
+for (const statement of [
+  'Meteorite strewnfields',
+  'An observed fall becomes a strewnfield',
+  'Illustrative positions, not find coordinates',
+  'View the Holbrook record',
+]) {
+  if (!home.includes(statement)) {
+    throw new Error(`Homepage output is missing: ${statement}`);
+  }
+}
+for (const id of recordIds) {
+  if (!home.includes(`/strewnfields/records/${id}/`)) {
+    throw new Error(`Homepage output is missing the ${id} record link`);
+  }
+}
 for (const evidence of ['Authority record', 'Published literature']) {
   if (!explore.includes(`<option value="${evidence}">${evidence}</option>`)) {
     throw new Error(`Explore output is missing the ${evidence} evidence filter`);

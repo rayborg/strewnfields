@@ -1,11 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EvidenceLegend from '../components/EvidenceLegend.astro';
+import StrewnfieldHero from '../components/StrewnfieldHero.astro';
 import { catalogue } from '../data/catalogue';
 
 const base = import.meta.env.BASE_URL;
-const featured =
-  catalogue.find((record) => record.id === 'glorieta-mountain') ?? catalogue[0]!;
 const claimCount = catalogue.reduce((total, record) => total + record.claims.length, 0);
 const coordinateCount = catalogue.reduce(
   (total, record) => total + record.coordinates.length,
@@ -14,43 +13,73 @@ const coordinateCount = catalogue.reduce(
 ---
 
 <BaseLayout
-  title="Strewnfields · A provenance-first meteorite field ledger"
-  description="Explore sourced meteorite locality and recovery evidence without turning uncertain coordinates into false precision."
+  title="Strewnfields · Meteorite strewnfields mapped from the sources"
+  description="Explore a provenance-first atlas of meteorite strewnfields, led by the documented 1912 Holbrook fall."
+  imageAlt="Strewnfields, a sourced atlas of meteorite fall and recovery evidence"
 >
-  <div class="page-shell">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">Field ledger · Public release 01</p>
-        <h1>Map the evidence, <em>not the myth.</em></h1>
+  <div class="page-shell home-shell">
+    <section class="landing-hero" aria-labelledby="home-title">
+      <div class="landing-intro">
+        <p class="eyebrow">Meteorite strewnfield atlas · Field ledger 01</p>
+        <h1 id="home-title">Meteorite strewnfields, <em>mapped from the sources.</em></h1>
         <p class="lede">
-          A provenance-first catalogue of meteorite localities, recovery literature,
-          community reports, disputes, and clearly labeled project interpretations.
+          Follow observed falls and recovered stones without turning historical descriptions
+          into false precision. Every field, point, and uncertainty keeps its evidence
+          attached.
         </p>
-        <form class="search-entry" action={`${base}explore/`} method="get">
-          <label class="sr-only" for="home-search">Search the catalogue</label>
-          <input
-            id="home-search"
-            name="q"
-            type="search"
-            placeholder="Try a name, place, class, or year"
-          />
-          <button type="submit">Search ledger</button>
-        </form>
+        <div class="hero-actions">
+          <a class="button" href={`${base}records/holbrook/`}>View the Holbrook record</a>
+          <a class="text-link" href={`${base}explore/`}>Browse the atlas →</a>
+        </div>
       </div>
-      <aside class="hero-note" aria-label="Release scope">
-        <p class="kicker">Editor’s note · 05 Aug 2026</p>
-        <h2>{catalogue.length} public records, completely shown</h2>
-        <p>
-          This release is intentionally small. Each record keeps coordinate roles, source
-          limits, and missing public locations visible instead of smoothing them away.
-        </p>
-        <a href={`${base}methodology/`}>Read the evidence method →</a>
-      </aside>
+      <StrewnfieldHero />
     </section>
 
-    <section aria-labelledby="principles-heading">
-      <p class="eyebrow">Reading the ledger</p>
-      <h2 id="principles-heading">Precision is a claim.</h2>
+    <section class="browse-section" aria-labelledby="browse-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Public catalogue · {catalogue.length} complete records</p>
+          <h2 id="browse-heading">Browse documented fields</h2>
+        </div>
+        <a href={`${base}explore/`}>Search and filter all records →</a>
+      </div>
+      <div class="home-record-grid">
+        {
+          catalogue.map((record) => (
+            <article class="home-record-card">
+              <p class="record-index">Case {String(record.publicOrder).padStart(2, '0')}</p>
+              <h3>
+                <a href={`${base}records/${record.id}/`}>{record.name}</a>
+              </h3>
+              <p class="record-location">
+                {record.locality} · {record.country}
+              </p>
+              <p>{record.summary}</p>
+              <p class="record-meta">
+                <span>{record.classification}</span>
+                <span>{record.eventLabel}</span>
+                <span>{record.sources.length} sources</span>
+              </p>
+              <a class="card-link" href={`${base}records/${record.id}/`}>
+                Open record →
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="method-section" aria-labelledby="principles-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">How to read the atlas</p>
+          <h2 id="principles-heading">Precision is a claim.</h2>
+        </div>
+        <p>
+          A field is evidence, not decoration. Published coordinates, prose extents, and
+          project interpretations are kept distinct.
+        </p>
+      </div>
       <div class="principles">
         <article class="principle">
           <span class="principle-index">01</span>
@@ -69,24 +98,6 @@ const coordinateCount = catalogue.reduce(
         </article>
       </div>
       <EvidenceLegend />
-    </section>
-
-    <section class="featured-record" aria-labelledby="featured-title">
-      <div class="featured-visual" aria-hidden="true">
-        <span class="field-number">{String(featured.publicOrder).padStart(2, '0')}</span>
-      </div>
-      <div class="featured-copy">
-        <p class="eyebrow">Featured record · {featured.region}</p>
-        <h2 id="featured-title">{featured.name}</h2>
-        <p class="lede">{featured.summary}</p>
-        <p class="record-meta">
-          <span>{featured.classification}</span>
-          <span>{featured.eventLabel}</span>
-          <span>{featured.sources.length} reviewed sources</span>
-        </p>
-        <p>{featured.mapNote}</p>
-        <a class="button" href={`${base}records/${featured.id}/`}>Open complete record</a>
-      </div>
     </section>
 
     <section class="stats-strip" aria-label="Public release scope">

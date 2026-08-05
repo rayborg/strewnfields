@@ -168,3 +168,6 @@ Principal Glorieta references include:
 - Confirmed `strewnfields.com` is registered at Porkbun and selected GitHub Pages as the free host for the public informational preview.
 - Committed and pushed initial release `bcac844`.
 - Enabled GitHub Pages through GitHub Actions and verified all public pages, records, assets, notices, robots, sitemap, and custom 404 behavior.
+- Redesigned the landing page around a sourced Holbrook meteor-entry and strewnfield schematic so the project's meteorite purpose is visible immediately.
+- Reduced global display-title sizes and moved all four public records above the methodology section.
+- Added mobile-specific readable dimensions and safety labels so the schematic cannot be mistaken for mapped find coordinates.

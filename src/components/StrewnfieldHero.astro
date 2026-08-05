@@ -1,0 +1,211 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<figure
+  class="strewnfield-figure"
+  aria-labelledby="holbrook-figure-title holbrook-figure-caption"
+>
+  <div class="figure-heading">
+    <div>
+      <p class="eyebrow">Case file 02 · Holbrook, Arizona</p>
+      <h2 id="holbrook-figure-title">An observed fall becomes a strewnfield.</h2>
+    </div>
+    <span class="figure-stamp">Schematic<br />not to scale</span>
+  </div>
+
+  <svg
+    class="strewnfield-schematic"
+    viewBox="0 0 900 500"
+    role="img"
+    aria-labelledby="holbrook-svg-title holbrook-svg-description"
+  >
+    <title id="holbrook-svg-title">
+      Schematic of meteor entry, fragmentation, and an elongated meteorite strewnfield
+    </title>
+    <desc id="holbrook-svg-description">
+      A conceptual meteor enters the atmosphere and breaks into fragments above a separate
+      ground-view diagram. The ground view shows illustrative stones distributed across a
+      broad east-west oval, labeled with Foote's historical estimate of approximately three
+      miles by half a mile. The marks are not find coordinates and the diagram is not to
+      scale.
+    </desc>
+    <defs>
+      <linearGradient id="night-fade" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#102e2d"></stop>
+        <stop offset="1" stop-color="#1b4842"></stop>
+      </linearGradient>
+      <linearGradient id="entry-glow" x1="0" x2="1">
+        <stop offset="0" stop-color="#f1c58c" stop-opacity="0"></stop>
+        <stop offset="0.7" stop-color="#f1c58c" stop-opacity="0.75"></stop>
+        <stop offset="1" stop-color="#fff4d6"></stop>
+      </linearGradient>
+      <pattern id="field-rule" width="30" height="30" patternUnits="userSpaceOnUse">
+        <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#183c37" stroke-opacity="0.09"
+        ></path>
+      </pattern>
+      <marker
+        id="arrow-end"
+        markerHeight="6"
+        markerWidth="6"
+        orient="auto"
+        refX="5"
+        refY="3"
+      >
+        <path d="M0,0 L6,3 L0,6 Z" fill="#d1a15e"></path>
+      </marker>
+    </defs>
+
+    <rect width="900" height="232" fill="url(#night-fade)"></rect>
+    <g fill="#eee6d3" opacity="0.5">
+      <circle cx="82" cy="47" r="1.8"></circle>
+      <circle cx="230" cy="80" r="1.2"></circle>
+      <circle cx="492" cy="42" r="1.5"></circle>
+      <circle cx="741" cy="65" r="1.7"></circle>
+      <circle cx="833" cy="31" r="1.1"></circle>
+    </g>
+    <path
+      d="M-20 209 Q250 160 474 190 T920 151"
+      fill="none"
+      stroke="#8eb0aa"
+      stroke-opacity="0.35"></path>
+    <path
+      d="M90 30 L312 119"
+      stroke="url(#entry-glow)"
+      stroke-width="15"
+      stroke-linecap="round"></path>
+    <path d="M114 39 L316 121" stroke="#fff0cd" stroke-width="3" stroke-linecap="round"
+    ></path>
+    <path
+      d="M315 120 l18 -9 14 14 -11 17 -21 -2 -8 -11 z"
+      fill="#c7653e"
+      stroke="#f5dfb8"
+      stroke-width="3"></path>
+    <g fill="#d98753" stroke="#f5dfb8" stroke-width="2">
+      <path d="M382 139 l12 -6 10 9 -5 12 -15 1 -7 -8 z"></path>
+      <path d="M419 109 l9 -4 8 7 -4 10 -11 1 -6 -6 z"></path>
+      <path d="M442 160 l8 -4 7 6 -3 9 -10 1 -6 -6 z"></path>
+      <path d="M480 126 l6 -3 6 5 -3 7 -7 1 -5 -5 z"></path>
+      <path d="M509 176 l5 -2 5 4 -2 6 -6 1 -4 -4 z"></path>
+    </g>
+    <g fill="none" stroke="#d1a15e" stroke-linecap="round" stroke-width="2">
+      <path d="M347 132 C361 135 369 137 381 142"></path>
+      <path d="M350 126 C375 112 396 110 417 113"></path>
+      <path d="M349 137 C386 155 414 164 438 165"></path>
+      <path d="M403 147 C441 141 462 132 477 130"></path>
+      <path d="M449 164 C473 172 489 177 506 179"></path>
+    </g>
+    <g
+      class="schematic-stage-labels"
+      fill="#f8f3e8"
+      font-family="SFMono-Regular, Consolas, monospace"
+      font-size="13"
+      letter-spacing="1.5"
+    >
+      <text x="34" y="198">01 · ATMOSPHERIC ENTRY</text>
+      <text x="347" y="198">02 · FRAGMENTATION</text>
+    </g>
+    <text
+      class="schematic-detail-label"
+      x="866"
+      y="216"
+      fill="#a9c5be"
+      font-family="SFMono-Regular, Consolas, monospace"
+      font-size="11"
+      text-anchor="end">CONCEPTUAL SEQUENCE · NOT A RECONSTRUCTED TRAJECTORY</text
+    >
+
+    <rect y="232" width="900" height="268" fill="#e7dcc5"></rect>
+    <rect y="232" width="900" height="268" fill="url(#field-rule)"></rect>
+    <path
+      d="M105 367 C214 288 649 282 797 352 C687 434 260 442 105 367 Z"
+      fill="#b85b3a"
+      fill-opacity="0.12"
+      stroke="#8b422c"
+      stroke-width="2"
+      stroke-dasharray="8 7"></path>
+    <path
+      d="M154 367 C277 330 646 326 750 353 C637 391 277 401 154 367 Z"
+      fill="#b85b3a"
+      fill-opacity="0.12"></path>
+    <g fill="#173f39" stroke="#f8f3e8" stroke-width="2">
+      <circle cx="184" cy="369" r="5"></circle>
+      <circle cx="235" cy="347" r="4"></circle>
+      <circle cx="281" cy="384" r="6"></circle>
+      <circle cx="327" cy="355" r="4"></circle>
+      <circle cx="364" cy="374" r="7"></circle>
+      <circle cx="403" cy="337" r="3.5"></circle>
+      <circle cx="431" cy="389" r="5"></circle>
+      <circle cx="462" cy="359" r="4"></circle>
+      <circle cx="493" cy="381" r="6"></circle>
+      <circle cx="522" cy="343" r="3.5"></circle>
+      <circle cx="551" cy="369" r="5"></circle>
+      <circle cx="584" cy="390" r="4"></circle>
+      <circle cx="619" cy="351" r="6"></circle>
+      <circle cx="655" cy="375" r="4"></circle>
+      <circle cx="704" cy="360" r="5"></circle>
+    </g>
+    <g
+      class="schematic-ground-labels"
+      fill="#183c37"
+      font-family="SFMono-Regular, Consolas, monospace"
+    >
+      <text x="34" y="267" font-size="13" font-weight="700" letter-spacing="1.5"
+        >03 · GROUND DISTRIBUTION</text
+      >
+      <text x="450" y="306" font-size="12" text-anchor="middle"
+        >FOOTE'S APPROXIMATE 1912 DESCRIPTION</text
+      >
+      <text x="450" y="326" font-size="17" font-weight="700" text-anchor="middle"
+        >~3 MILES × 0.5 MILE · BROADLY EAST–WEST</text
+      >
+      <text x="450" y="470" font-size="12" text-anchor="middle"
+        >ILLUSTRATIVE POSITIONS, NOT FIND COORDINATES</text
+      >
+      <text x="90" y="370" font-size="12" font-weight="700" text-anchor="middle">W</text>
+      <text x="818" y="356" font-size="12" font-weight="700" text-anchor="middle">E</text>
+    </g>
+    <path
+      d="M116 455 H784"
+      fill="none"
+      stroke="#d1a15e"
+      stroke-width="2"
+      marker-end="url(#arrow-end)"></path>
+  </svg>
+  <div class="mobile-schematic-key" aria-hidden="true">
+    <span>01 · Entry</span>
+    <span>02 · Fragmentation</span>
+    <span>03 · Ground field</span>
+  </div>
+  <div class="mobile-schematic-summary">
+    <p>
+      <strong>Published ground description</strong>
+      Approximately 3 miles × 0.5 mile, broadly east–west.
+    </p>
+    <p>
+      <strong>How to read this</strong>
+      Illustrative positions, not find coordinates. Entry and breakup are conceptual, not a reconstructed
+      trajectory.
+    </p>
+  </div>
+
+  <figcaption id="holbrook-figure-caption" class="figure-caption">
+    <div>
+      <strong>Holbrook · L/LL6</strong>
+      <span>Observed fall · 19 July 1912</span>
+    </div>
+    <div>
+      <strong>14,029+ stones</strong>
+      <span>Foote’s historical estimate</span>
+    </div>
+    <p>
+      Schematic, not to scale. Illustrative positions, not find coordinates. Entry and
+      breakup show the process, not a reconstructed Holbrook trajectory. Dimensions, broad
+      orientation, and count are historical estimates from
+      <a href="https://doi.org/10.2475/ajs.s4-34.203.437">Foote (1912)</a>.
+    </p>
+  </figcaption>
+  <a class="figure-record-link" href={`${base}records/holbrook/`}
+    >Open the sourced Holbrook record →</a
+  >
+</figure>

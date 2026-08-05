@@ -96,6 +96,10 @@ Last updated: 2026-08-05
 - [x] Add map legend, textual geometry equivalents, tile-error fallback, and map-free navigation.
 - [x] Implement mobile list-first behavior and accessible map presentation.
 - [x] Add metadata, canonical URLs, sitemap, robots file, and social-preview metadata.
+- [x] Make the meteorite-strewnfield purpose explicit in the first headline and first viewport.
+- [x] Lead with a sourced Holbrook entry, fragmentation, and ground-distribution schematic.
+- [x] Keep schematic positions clearly illustrative and provide readable mobile safety labels.
+- [x] Reduce display-heading sizes across landing, record, and information pages.
 
 ### Validation Checkpoint 4
 
