@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { catalogue } from '../data/catalogue';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="About Strewnfields"
+  description="Why Strewnfields is building a provenance-first public catalogue of meteorite locality and recovery evidence."
+>
+  <div class="page-shell">
+    <header class="page-intro">
+      <p class="eyebrow">About the project</p>
+      <h1>A catalogue that shows its work.</h1>
+      <p class="lede">
+        Strewnfields is an independent public project for comparing meteorite locality and
+        recovery claims without stripping away their provenance, limits, or conflicts.
+      </p>
+    </header>
+
+    <div class="prose">
+      <h2>Why begin with {catalogue.length} records?</h2>
+      <p>
+        A small, varied catalogue exposes editorial edge cases before volume can hide them.
+        These records test conflicting localities, different coordinate roles, and locations
+        withheld from public mapping while keeping every assertion tied to evidence.
+      </p>
+
+      <h2>What this is not</h2>
+      <p>
+        It is not a hunting guide, land-status service, substitute for collection records,
+        or promise that every source coordinate is accurate. It does not accept unsourced
+        individual finds or create precise geometry from approximate prose.
+      </p>
+
+      <h2>Public now, durable later</h2>
+      <p>
+        The public sample is static and open to inspection. Its structured claims are
+        designed to move into a spatial database without erasing source history. Any future
+        private catalogue must use server-side authorization; protected coordinates will
+        never be hidden inside public site assets or repository history.
+      </p>
+
+      <div class="card-grid">
+        <article class="info-card">
+          <h3>Transparent</h3><p>
+            Every visible assertion retains a source locator and editorial state.
+          </p>
+        </article>
+        <article class="info-card">
+          <h3>Correctable</h3><p>
+            Revision dates and durable claim IDs support review and change history.
+          </p>
+        </article>
+        <article class="info-card">
+          <h3>Restrained</h3><p>
+            Missing geometry remains missing instead of being invented to fill a map.
+          </p>
+        </article>
+      </div>
+
+      <p><a class="button" href={`${base}explore/`}>Explore all public records</a></p>
+    </div>
+  </div>
+</BaseLayout>

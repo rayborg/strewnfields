@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CatalogueSearch from '../components/CatalogueSearch.astro';
+import EvidenceLegend from '../components/EvidenceLegend.astro';
+import FieldMap from '../components/FieldMap.astro';
+import { catalogue } from '../data/catalogue';
+---
+
+<BaseLayout
+  title="Explore the public catalogue · Strewnfields"
+  description="Search the public Strewnfields catalogue by meteorite, alias, locality, classification, year, and evidence type."
+>
+  <div class="page-shell">
+    <header class="page-intro">
+      <p class="eyebrow">
+        Public catalogue · {catalogue.length} reviewed {
+          catalogue.length === 1 ? 'record' : 'records'
+        }
+      </p>
+      <h1>Explore the ledger</h1>
+      <p class="lede">
+        Search names, aliases, places, classifications, years, and evidence. Map symbols
+        show public source claims, not certainty or permission to access land.
+      </p>
+      <EvidenceLegend />
+    </header>
+
+    <div class="explore-layout">
+      <CatalogueSearch />
+      <FieldMap records={catalogue} compact />
+    </div>
+  </div>
+</BaseLayout>

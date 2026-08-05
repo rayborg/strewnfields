@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Membership preview · Strewnfields"
+  description="A transparent preview of possible future Strewnfields research membership, with no signup, payment, or private data in this release."
+>
+  <div class="page-shell">
+    <header class="page-intro">
+      <p class="eyebrow">Concept preview · No signup or payment</p>
+      <h1>Research tools, when the evidence can scale.</h1>
+      <p class="lede">
+        The public catalogue comes first. A future membership may support a larger reviewed
+        catalogue, advanced spatial search, exports, and research workflows.
+      </p>
+    </header>
+
+    <section class="membership-panel">
+      <div>
+        <p class="eyebrow">Possible future workspace</p>
+        <h2>Built around provenance, not hidden map pins.</h2>
+        <p>
+          Any member product will keep free examples on stable public URLs and preserve the
+          same source, confidence, precision, and safety rules.
+        </p>
+      </div>
+      <div>
+        <h3>Under consideration</h3>
+        <ul>
+          <li>Search across a much larger editorially reviewed catalogue</li>
+          <li>Claim comparison and saved research views</li>
+          <li>Source-aware spatial filters and documented exports</li>
+          <li>Revision alerts and correction workflows</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="prose">
+      <h2>What is deliberately absent</h2>
+      <p>
+        There is no account creation, checkout, price, testimonial, or waiting-list data
+        collection in this release. Those details require product, legal, privacy,
+        operational, and support decisions that have not been made.
+      </p>
+      <h2>Private means server-side</h2>
+      <p>
+        Future restricted data must live behind server-side authorization. It will not be
+        shipped in static JSON, JavaScript, GeoJSON, source maps, or public Git history.
+        Protected locations remain protected regardless of subscription status.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

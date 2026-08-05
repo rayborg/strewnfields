@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EvidenceLegend from '../components/EvidenceLegend.astro';
+import { catalogue } from '../data/catalogue';
+
+const base = import.meta.env.BASE_URL;
+const featured =
+  catalogue.find((record) => record.id === 'glorieta-mountain') ?? catalogue[0]!;
+const claimCount = catalogue.reduce((total, record) => total + record.claims.length, 0);
+const coordinateCount = catalogue.reduce(
+  (total, record) => total + record.coordinates.length,
+  0,
+);
+---
+
+<BaseLayout
+  title="Strewnfields · A provenance-first meteorite field ledger"
+  description="Explore sourced meteorite locality and recovery evidence without turning uncertain coordinates into false precision."
+>
+  <div class="page-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Field ledger · Public release 01</p>
+        <h1>Map the evidence, <em>not the myth.</em></h1>
+        <p class="lede">
+          A provenance-first catalogue of meteorite localities, recovery literature,
+          community reports, disputes, and clearly labeled project interpretations.
+        </p>
+        <form class="search-entry" action={`${base}explore/`} method="get">
+          <label class="sr-only" for="home-search">Search the catalogue</label>
+          <input
+            id="home-search"
+            name="q"
+            type="search"
+            placeholder="Try a name, place, class, or year"
+          />
+          <button type="submit">Search ledger</button>
+        </form>
+      </div>
+      <aside class="hero-note" aria-label="Release scope">
+        <p class="kicker">Editor’s note · 05 Aug 2026</p>
+        <h2>{catalogue.length} public records, completely shown</h2>
+        <p>
+          This release is intentionally small. Each record keeps coordinate roles, source
+          limits, and missing public locations visible instead of smoothing them away.
+        </p>
+        <a href={`${base}methodology/`}>Read the evidence method →</a>
+      </aside>
+    </section>
+
+    <section aria-labelledby="principles-heading">
+      <p class="eyebrow">Reading the ledger</p>
+      <h2 id="principles-heading">Precision is a claim.</h2>
+      <div class="principles">
+        <article class="principle">
+          <span class="principle-index">01</span>
+          <h3>Sources stay attached</h3>
+          <p>Every published claim points to a source and a reviewable locator.</p>
+        </article>
+        <article class="principle">
+          <span class="principle-index">02</span>
+          <h3>Conflicts remain visible</h3>
+          <p>Different coordinates, dates, or totals are preserved rather than averaged.</p>
+        </article>
+        <article class="principle">
+          <span class="principle-index">03</span>
+          <h3>Roles matter</h3>
+          <p>A locality is not silently relabeled as an exact recovery or field center.</p>
+        </article>
+      </div>
+      <EvidenceLegend />
+    </section>
+
+    <section class="featured-record" aria-labelledby="featured-title">
+      <div class="featured-visual" aria-hidden="true">
+        <span class="field-number">{String(featured.publicOrder).padStart(2, '0')}</span>
+      </div>
+      <div class="featured-copy">
+        <p class="eyebrow">Featured record · {featured.region}</p>
+        <h2 id="featured-title">{featured.name}</h2>
+        <p class="lede">{featured.summary}</p>
+        <p class="record-meta">
+          <span>{featured.classification}</span>
+          <span>{featured.eventLabel}</span>
+          <span>{featured.sources.length} reviewed sources</span>
+        </p>
+        <p>{featured.mapNote}</p>
+        <a class="button" href={`${base}records/${featured.id}/`}>Open complete record</a>
+      </div>
+    </section>
+
+    <section class="stats-strip" aria-label="Public release scope">
+      <div class="stat">
+        <strong>{String(catalogue.length).padStart(2, '0')}</strong> public records
+      </div>
+      <div class="stat"><strong>{claimCount}</strong> atomic published claims</div>
+      <div class="stat"><strong>{coordinateCount}</strong> public coordinate claims</div>
+    </section>
+  </div>
+</BaseLayout>

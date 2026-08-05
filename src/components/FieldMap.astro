@@ -1,0 +1,264 @@
+---
+import type { CoordinateRecord, Meteorite } from '../data/schema';
+
+interface Props {
+  coordinates?: CoordinateRecord[];
+  records?: Meteorite[];
+  compact?: boolean;
+  mapNote?: string;
+  emptyMessage?: string;
+}
+
+const {
+  coordinates,
+  records,
+  compact = false,
+  mapNote,
+  emptyMessage = 'No public coordinates are available for this record.',
+} = Astro.props;
+
+const suppliedRecords = records ?? [];
+const mapData = (
+  coordinates ? [{ id: '', name: '', coordinates }] : suppliedRecords
+).flatMap((record) =>
+  record.coordinates.map((coordinate) => ({
+    id: coordinate.id,
+    recordId: record.id,
+    recordName: record.name,
+    label: coordinate.label,
+    raw: coordinate.raw,
+    roles: coordinate.roles,
+    evidence: coordinate.evidence,
+    longitude: coordinate.normalized.longitude,
+    latitude: coordinate.normalized.latitude,
+    precision: coordinate.precision,
+    estimatedAccuracy: coordinate.estimatedAccuracy,
+  })),
+);
+const titleId = `map-title-${compact ? 'catalogue' : mapData[0]?.recordId || 'record'}`;
+---
+
+{
+  mapData.length > 0 ? (
+    <section class="map-panel" aria-labelledby={titleId} data-map-panel>
+      <div class="map-heading">
+        <h2 id={titleId}>
+          {compact ? 'Visible record locations' : 'Public location evidence'}
+        </h2>
+        <span class="field-label">Source claims</span>
+      </div>
+      <div
+        class="map-canvas"
+        data-field-map
+        data-locations={JSON.stringify(mapData)}
+        data-compact={compact ? 'true' : 'false'}
+        role="region"
+        aria-label="Interactive context map of public coordinate claims"
+      >
+        <p class="map-fallback" data-map-fallback>
+          The interactive map requires JavaScript and a working map service. The complete
+          location record follows below.
+        </p>
+      </div>
+      <div class="map-status" data-map-status role="status" aria-live="polite" />
+      <div class="map-text-equivalent">
+        <h3>Map-free location record</h3>
+        <ol data-map-text-list>
+          {mapData.map((location) => (
+            <li data-map-text-record={location.recordId || undefined}>
+              <strong>
+                {location.recordName ? `${location.recordName} · ` : ''}
+                {location.label}:
+              </strong>{' '}
+              {location.raw}; {location.roles.join(', ')}. Source precision:{' '}
+              {location.precision}. Estimated accuracy: {location.estimatedAccuracy}.
+            </li>
+          ))}
+        </ol>
+        <p class="map-text-empty" data-map-text-empty hidden>
+          No public coordinates match the visible catalogue records.
+        </p>
+        {mapNote && <p class="fine-print">{mapNote}</p>}
+        <p class="fine-print">
+          Basemap is context only; coordinates do not establish access or recovery evidence.
+        </p>
+      </div>
+    </section>
+  ) : (
+    <aside class="withheld-panel" aria-labelledby={titleId}>
+      <p class="field-label">Location record</p>
+      <h2 id={titleId}>Public points withheld</h2>
+      <p>{emptyMessage}</p>
+      {mapNote && <p class="fine-print">{mapNote}</p>}
+    </aside>
+  )
+}
+
+<script>
+  import maplibregl from 'maplibre-gl';
+
+  type MapLocation = {
+    id: string;
+    recordId: string;
+    recordName: string;
+    label: string;
+    raw: string;
+    roles: string[];
+    evidence: string[];
+    longitude: number;
+    latitude: number;
+    precision: string;
+    estimatedAccuracy: string;
+  };
+
+  for (const container of document.querySelectorAll<HTMLElement>('[data-field-map]')) {
+    const panel = container.closest<HTMLElement>('[data-map-panel]');
+    const status = panel?.querySelector<HTMLElement>('[data-map-status]');
+    const fallback = container.querySelector<HTMLElement>('[data-map-fallback]');
+    const isCompact = container.dataset.compact === 'true';
+    const locations = JSON.parse(container.dataset.locations ?? '[]') as MapLocation[];
+    const markers = new Map<string, maplibregl.Marker>();
+    const catalogueRoot = document.querySelector('[data-catalogue-search]');
+    let visibleRecordIds: string[] | null = catalogueRoot
+      ? [...document.querySelectorAll<HTMLElement>('[data-record]:not([hidden])')]
+          .map((record) => record.dataset.recordId)
+          .filter((id): id is string => Boolean(id))
+      : null;
+    let map: maplibregl.Map | undefined;
+    let mapReady = false;
+    let mapFailureMessage = '';
+
+    const visibleLocations = () =>
+      locations.filter(
+        (location) =>
+          !visibleRecordIds ||
+          !location.recordId ||
+          visibleRecordIds.includes(location.recordId),
+      );
+
+    const synchronizeVisibility = () => {
+      const visible = visibleLocations();
+      const visibleKeys = new Set(
+        visible.map((location) => `${location.recordId}--${location.id}`),
+      );
+
+      for (const [key, marker] of markers) {
+        marker.getElement().toggleAttribute('hidden', !visibleKeys.has(key));
+      }
+      for (const item of panel?.querySelectorAll<HTMLElement>('[data-map-text-record]') ??
+        []) {
+        item.hidden = Boolean(
+          visibleRecordIds && !visibleRecordIds.includes(item.dataset.mapTextRecord ?? ''),
+        );
+      }
+
+      const textEmpty = panel?.querySelector<HTMLElement>('[data-map-text-empty]');
+      if (textEmpty) textEmpty.hidden = visible.length !== 0;
+      if (status) {
+        status.textContent =
+          visible.length === 0
+            ? visibleRecordIds?.length === 0
+              ? 'No public coordinates match because no catalogue records are visible.'
+              : 'The visible catalogue selection has no public coordinates to map.'
+            : mapFailureMessage;
+      }
+
+      return visible;
+    };
+
+    const updateMapView = () => {
+      if (!map || !mapReady) return;
+      const visible = visibleLocations();
+      if (visible.length === 0) {
+        map.jumpTo({ center: [0, 20], zoom: 1 });
+        return;
+      }
+
+      const bounds = new maplibregl.LngLatBounds();
+      for (const location of visible) {
+        bounds.extend([location.longitude, location.latitude]);
+      }
+      map.fitBounds(bounds, {
+        padding: isCompact ? 44 : 60,
+        maxZoom: 10,
+        duration: 0,
+      });
+    };
+
+    document.addEventListener('catalogue:visible-records', (event) => {
+      visibleRecordIds = (event as CustomEvent<{ ids: string[] }>).detail.ids;
+      synchronizeVisibility();
+      updateMapView();
+    });
+
+    // Cards are the durable state. Read them immediately in case their initial event ran first.
+    synchronizeVisibility();
+
+    try {
+      fallback?.remove();
+      map = new maplibregl.Map({
+        container,
+        center: [0, 20],
+        zoom: 1,
+        style: {
+          version: 8,
+          sources: {
+            osm: {
+              type: 'raster',
+              tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+              tileSize: 256,
+              attribution: '© OpenStreetMap contributors',
+            },
+          },
+          layers: [{ id: 'osm', type: 'raster', source: 'osm' }],
+        },
+      });
+
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+      for (const location of locations) {
+        const marker = document.createElement('div');
+        marker.className = `map-marker ${location.evidence.includes('Disputed') ? 'disputed' : ''}`;
+        marker.setAttribute('aria-hidden', 'true');
+        marker.setAttribute('role', 'presentation');
+        marker.tabIndex = -1;
+        const markerLabel = document.createElement('span');
+        markerLabel.textContent = String(markers.size + 1);
+        marker.append(markerLabel);
+
+        markers.set(
+          `${location.recordId}--${location.id}`,
+          new maplibregl.Marker({ element: marker })
+            .setLngLat([location.longitude, location.latitude])
+            .addTo(map),
+        );
+      }
+      synchronizeVisibility();
+
+      const timer = window.setTimeout(() => {
+        if (!mapReady) {
+          mapFailureMessage =
+            'Map tiles are unavailable. The complete location record follows below.';
+          synchronizeVisibility();
+        }
+      }, 8000);
+
+      map.once('load', () => {
+        window.clearTimeout(timer);
+        mapReady = true;
+        mapFailureMessage = '';
+        synchronizeVisibility();
+        updateMapView();
+      });
+      map.on('error', () => {
+        mapFailureMessage =
+          'Some map context could not load. The complete location record follows below.';
+        synchronizeVisibility();
+      });
+    } catch {
+      mapFailureMessage =
+        'Interactive map unavailable. The complete location record follows below.';
+      synchronizeVisibility();
+    }
+  }
+</script>

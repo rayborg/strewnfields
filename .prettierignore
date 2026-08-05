@@ -1,0 +1,7 @@
+dist/
+node_modules/
+.astro/
+package-lock.json
+SESSION.md
+IMPLEMENTATION_PLAN.md
+glorieta_mountain_strewnfield_maps.md

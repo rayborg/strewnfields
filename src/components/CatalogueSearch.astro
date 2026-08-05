@@ -1,0 +1,142 @@
+---
+import { publicCatalogue } from '../data/catalogue';
+import { evidenceKinds } from '../data/schema';
+import EvidenceBadge from './EvidenceBadge.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<section data-catalogue-search>
+  <div class="catalogue-controls">
+    <div class="control">
+      <label for="catalogue-query">Search the public catalogue</label>
+      <input
+        id="catalogue-query"
+        type="search"
+        inputmode="search"
+        placeholder="Name, alias, locality, class, year…"
+        autocomplete="off"
+        data-query
+      />
+    </div>
+    <div class="control">
+      <label for="evidence-filter">Evidence present</label>
+      <select id="evidence-filter" data-evidence-filter>
+        <option value="">All evidence</option>
+        {evidenceKinds.map((kind) => <option value={kind}>{kind}</option>)}
+      </select>
+    </div>
+  </div>
+
+  <p class="result-summary" data-result-summary aria-live="polite">
+    {publicCatalogue.length} public {publicCatalogue.length === 1 ? 'record' : 'records'}
+  </p>
+
+  <div data-results>
+    {
+      publicCatalogue.map((record) => (
+        <article
+          class="catalogue-card"
+          data-record
+          data-record-id={record.id}
+          data-search={record.searchText}
+          data-evidence={record.evidence.join('|')}
+        >
+          <p class="kicker">
+            Record {String(record.publicOrder).padStart(3, '0')} · {record.recordStatus}
+          </p>
+          <h2>
+            <a href={`${base}records/${record.id}/`}>{record.name}</a>
+          </h2>
+          <p class="record-meta">
+            <span>{record.classification}</span>
+            <span>{record.locality}</span>
+            <span>{record.eventLabel}</span>
+          </p>
+          <p>{record.summary}</p>
+          <div class="legend">
+            {record.evidence.map((kind) => (
+              <EvidenceBadge kind={kind} />
+            ))}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="empty-state" data-empty hidden>
+    <h2>No matching records</h2>
+    <p>Try a broader place, classification, year, alias, or evidence status.</p>
+    <button class="button secondary" type="button" data-clear>Clear search</button>
+  </div>
+
+  <noscript>
+    <p class="callout">
+      Filtering requires JavaScript. All public records remain listed above.
+    </p>
+  </noscript>
+</section>
+
+<script>
+  function normalize(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLocaleLowerCase('en')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-catalogue-search]')) {
+    const query = root.querySelector<HTMLInputElement>('[data-query]');
+    const filter = root.querySelector<HTMLSelectElement>('[data-evidence-filter]');
+    const summary = root.querySelector<HTMLElement>('[data-result-summary]');
+    const empty = root.querySelector<HTMLElement>('[data-empty]');
+    const records = [...root.querySelectorAll<HTMLElement>('[data-record]')];
+    if (!query || !filter || !summary || !empty) continue;
+
+    const params = new URLSearchParams(window.location.search);
+    query.value = params.get('q') ?? '';
+    const restoredEvidence = params.get('evidence') ?? '';
+    filter.value = [...filter.options].some((option) => option.value === restoredEvidence)
+      ? restoredEvidence
+      : '';
+
+    const update = () => {
+      const terms = normalize(query.value).split(' ').filter(Boolean);
+      const visibleIds: string[] = [];
+      for (const record of records) {
+        const text = record.dataset.search ?? '';
+        const evidence = record.dataset.evidence?.split('|') ?? [];
+        const matchesQuery = terms.every((term) => text.includes(term));
+        const matchesEvidence = !filter.value || evidence.includes(filter.value);
+        record.hidden = !(matchesQuery && matchesEvidence);
+        if (!record.hidden && record.dataset.recordId)
+          visibleIds.push(record.dataset.recordId);
+      }
+
+      summary.textContent = `${visibleIds.length} public ${visibleIds.length === 1 ? 'record' : 'records'}`;
+      empty.hidden = visibleIds.length !== 0;
+
+      const next = new URLSearchParams();
+      if (query.value.trim()) next.set('q', query.value.trim());
+      if (filter.value) next.set('evidence', filter.value);
+      const target = `${window.location.pathname}${next.size > 0 ? `?${next.toString()}` : ''}${window.location.hash}`;
+      history.replaceState(null, '', target);
+
+      document.dispatchEvent(
+        new CustomEvent('catalogue:visible-records', { detail: { ids: visibleIds } }),
+      );
+    };
+
+    query.addEventListener('input', update);
+    filter.addEventListener('change', update);
+    root.querySelector('[data-clear]')?.addEventListener('click', () => {
+      query.value = '';
+      filter.value = '';
+      update();
+      query.focus();
+    });
+    update();
+  }
+</script>

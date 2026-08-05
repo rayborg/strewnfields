@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { catalogue } from '../data/catalogue';
+
+const typeNames = {
+  authority: 'Nomenclature authority / maintained catalogue',
+  journal: 'Scientific literature',
+  catalogue: 'Scholarly catalogue',
+  book: 'Scholarly monograph',
+  government: 'Government publication',
+  commercial: 'Commercial / collector page',
+  'community-archive': 'Community archive',
+};
+---
+
+<BaseLayout
+  title="Source register · Strewnfields"
+  description="Bibliographic register and source-rights notes for every public Strewnfields record."
+>
+  <div class="page-shell">
+    <header class="page-intro">
+      <p class="eyebrow">Source register · {catalogue.length} public records</p>
+      <h1>Sources are part of the data.</h1>
+      <p class="lede">
+        The register records authority tier, stable identifiers, access date, and reuse
+        caution. Linked publications remain with their publishers; this site stores no
+        source PDFs or maps.
+      </p>
+    </header>
+
+    <div class="callout">
+      <strong>Tier is not truth.</strong> It describes source type and review priority. A lower-tier
+      source can contain useful first-hand testimony; confidence is assessed claim by claim.
+    </div>
+
+    {
+      catalogue.map((record) => (
+        <section class="source-group" aria-labelledby={`sources-${record.id}`}>
+          <div class="section-rule">
+            <h2 id={`sources-${record.id}`}>{record.name}</h2>
+          </div>
+          <p class="fine-print">
+            {record.sources.length} sources · revision {record.revision}
+          </p>
+          <ol class="source-list">
+            {record.sources.map((source) => {
+              const doiUrl = source.doi ? `https://doi.org/${source.doi}` : null;
+              const publicUrl =
+                source.url?.replace(/\/$/, '') === doiUrl?.replace(/\/$/, '')
+                  ? null
+                  : source.url;
+
+              return (
+                <li class="source-entry" id={`${record.id}--${source.id}`}>
+                  <div>
+                    <p class="source-tier">
+                      Tier {source.tier} · {typeNames[source.sourceType]}
+                    </p>
+                    <h3>{source.title}</h3>
+                    <p>
+                      {source.authors}
+                      {source.year ? ` · ${source.year}` : ''}
+                    </p>
+                    {source.doi && (
+                      <p>
+                        DOI: <a href={doiUrl}>{source.doi}</a>
+                      </p>
+                    )}
+                    {publicUrl && (
+                      <p>
+                        <a href={publicUrl}>Open source record ↗</a>
+                      </p>
+                    )}
+                    <p class="fine-print">
+                      Accessed {source.accessed}. {source.rightsNote}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      ))
+    }
+
+    <section class="prose">
+      <h2>Context maps are not find evidence</h2>
+      <p>
+        Basemaps and regional maps may help readers understand context. They do not
+        independently establish verified meteorite recoveries and are not promoted to
+        coordinate evidence without a specific, reviewable claim.
+      </p>
+      <h2>Rights boundary</h2>
+      <p>
+        Original interface code is MIT licensed. That license does not cover linked
+        publications, database content, maps, imagery, or third-party text. See the
+        repository’s data-rights notice before reusing these records.
+      </p>
+    </section>
+  </div>
+</BaseLayout>

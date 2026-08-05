@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EvidenceLegend from '../components/EvidenceLegend.astro';
+---
+
+<BaseLayout
+  title="Evidence methodology · Strewnfields"
+  description="How Strewnfields extracts atomic claims, preserves coordinate precision, handles conflict, and publishes reviewed meteorite records."
+>
+  <div class="page-shell">
+    <header class="page-intro">
+      <p class="eyebrow">Editorial protocol · Version 1</p>
+      <h1>From source to field record</h1>
+      <p class="lede">
+        The method is designed to stop plausible-looking map geometry from outrunning its
+        evidence.
+      </p>
+      <EvidenceLegend />
+    </header>
+
+    <div class="prose">
+      <h2>1. Preserve the source</h2>
+      <p>
+        We record bibliographic metadata, URL or DOI, access date, and a page, figure,
+        field, table, or message locator. A bibliography alone is not enough to trace an
+        atomic claim.
+      </p>
+
+      <h2>2. Extract claims, not conclusions</h2>
+      <p>
+        Identity, classification, location, date, mass, recovery narrative, and extent
+        become separate assertions. Contradictions remain separate. We do not average
+        conflicting locations or select a preferred number solely because it is newer.
+      </p>
+
+      <h2 id="coordinate-precision">3. Preserve coordinate meaning</h2>
+      <p>
+        Original notation and stated datum or coordinate reference system are retained.
+        WGS84 decimal values are arithmetic normalizations for software, not newly measured
+        positions. Precision and estimated accuracy are distinct:
+      </p>
+      <div class="card-grid">
+        <article class="info-card">
+          <h3>Precision</h3>
+          <p>How finely a source writes a value, such as a whole arc-minute.</p>
+        </article>
+        <article class="info-card">
+          <h3>Accuracy</h3>
+          <p>
+            How closely the value is expected to match the real-world thing it claims to
+            locate.
+          </p>
+        </article>
+        <article class="info-card">
+          <h3>Semantic role</h3>
+          <p>
+            What the coordinate means: locality, individual recovery, search area, or
+            derived model.
+          </p>
+        </article>
+      </div>
+      <p>
+        A value can be numerically precise yet geographically unsuitable. The interface
+        keeps source notation and semantic roles beside normalized map positions, and
+        records with no approved public points remain map-free.
+      </p>
+
+      <h2>4. Assess evidence and confidence separately</h2>
+      <p>
+        Evidence labels describe provenance and role. Confidence records editorial
+        assessment of a particular assertion. “Official” is reserved for identified
+        nomenclature status or authority; it is never shorthand for exact, peer reviewed, or
+        correct.
+      </p>
+
+      <h2>5. Keep derivation inspectable</h2>
+      <p>
+        Any project-created geometry must cite every input and state its method, coordinate
+        system, precision, accuracy limits, and sensitivity. The catalogue does not draw a
+        strewnfield polygon when public evidence does not support an anchored orientation
+        and perimeter.
+      </p>
+
+      <h2>6. Review before publication</h2>
+      <p>
+        Automated validation checks schema shape, source references, coordinate roles, and
+        public safety fields. Language-model review can flag inconsistencies but is not a
+        source. Human editorial approval is required for publication.
+      </p>
+
+      <h2 id="location-safety">Location and safety policy</h2>
+      <p>
+        Legally reusable public coordinates may still be withheld or generalized for active
+        research, embargoes, private residences, protected or culturally sensitive land,
+        ecological risk, or a credible safety request. Membership never overrides a
+        restriction. Coordinates never imply ownership, permission to enter, permission to
+        collect, or legality of possession or export.
+      </p>
+
+      <h2>Corrections</h2>
+      <p>
+        Corrections should identify the claim, cite a reviewable source, and explain the
+        proposed change. Do not place private coordinates or personal information in a
+        public issue. Urgent suppression concerns can be raised without publishing the
+        sensitive value itself.
+      </p>
+      <a class="button secondary" href="https://github.com/rayborg/strewnfields/issues"
+        >Open an issue</a
+      >
+    </div>
+  </div>
+</BaseLayout>

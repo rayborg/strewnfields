@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ClaimCard from '../../components/ClaimCard.astro';
+import EvidenceLegend from '../../components/EvidenceLegend.astro';
+import FieldMap from '../../components/FieldMap.astro';
+import { catalogue } from '../../data/catalogue';
+import type { Meteorite } from '../../data/schema';
+
+export function getStaticPaths() {
+  return catalogue.map((record) => ({ params: { id: record.id }, props: { record } }));
+}
+
+interface Props {
+  record: Meteorite;
+}
+
+const { record } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const recordNumber = String(record.publicOrder).padStart(3, '0');
+const recordJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Dataset',
+  name: `${record.name} evidence record`,
+  description: record.summary,
+  url: `https://rayborg.github.io${base}records/${record.id}/`,
+  dateModified: record.revision,
+  creator: { '@type': 'Organization', name: 'Strewnfields' },
+  isAccessibleForFree: true,
+  license: 'https://github.com/rayborg/strewnfields/blob/main/DATA_RIGHTS.md',
+};
+---
+
+<BaseLayout
+  title={`${record.name} evidence record · Strewnfields`}
+  description={record.summary}
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(recordJsonLd)} />
+  <article class="page-shell">
+    <header class="record-header">
+      <div>
+        <p class="eyebrow">Field record {recordNumber} · {record.locality}</p>
+        <h1>{record.name}</h1>
+        <p class="lede">{record.summary}</p>
+      </div>
+      <div class="record-stamp">
+        {record.recordStatus}<br />Revision {record.revision}
+      </div>
+    </header>
+
+    <dl class="identity-grid">
+      <div><dt>Classification</dt><dd>{record.classification}</dd></div>
+      <div><dt>Event</dt><dd>{record.eventLabel}</dd></div>
+      <div>
+        <dt>{record.aliases.length === 1 ? 'Alias' : 'Aliases'}</dt><dd>
+          {record.aliases.length > 0 ? record.aliases.join(', ') : 'None listed'}
+        </dd>
+      </div>
+      <div><dt>Public coordinates</dt><dd>{record.coordinates.length}</dd></div>
+    </dl>
+
+    <EvidenceLegend />
+
+    <div class="record-layout">
+      <div>
+        <section aria-labelledby="reading-title">
+          <div class="section-rule">
+            <h2 id="reading-title">Read the location evidence</h2>
+          </div>
+          <div class="callout"><strong>Map scope.</strong> {record.mapNote}</div>
+          <p>
+            Raw notation, semantic role, source precision, estimated accuracy, and
+            normalization method remain attached to each public coordinate. A map position
+            does not make the underlying claim more accurate.
+          </p>
+        </section>
+
+        <section aria-labelledby="claims-title">
+          <div class="section-rule"><h2 id="claims-title">Claim ledger</h2></div>
+          <p>
+            Authority tier and confidence are separate. Open each card for its source
+            locator and editorial qualification.
+          </p>
+          <div class="claim-list">
+            {
+              record.claims.map((claim) => (
+                <ClaimCard claim={claim} sources={record.sources} recordId={record.id} />
+              ))
+            }
+          </div>
+        </section>
+
+        <section aria-labelledby="chronology-title">
+          <div class="section-rule"><h2 id="chronology-title">Document chronology</h2></div>
+          <ol class="timeline">
+            {
+              record.chronology.map((entry) => (
+                <li>
+                  <>
+                    <time>{entry.label}</time>
+                    <span>{entry.text}</span>
+                  </>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="fine-print">
+            Dates summarize the record’s cited evidence. Full citations and locators appear
+            in the claim ledger and source register.
+          </p>
+        </section>
+
+        <section aria-labelledby="access-title">
+          <div class="section-rule"><h2 id="access-title">Access and use</h2></div>
+          <p>{record.accessNote}</p>
+          <a href={`${base}methodology/#location-safety`}
+            >Read the location and safety policy →</a
+          >
+        </section>
+      </div>
+
+      <FieldMap
+        coordinates={record.coordinates}
+        mapNote={record.mapNote}
+        emptyMessage={record.mapNote}
+      />
+    </div>
+  </article>
+</BaseLayout>

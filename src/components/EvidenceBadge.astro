@@ -1,0 +1,12 @@
+---
+import type { EvidenceKind } from '../data/schema';
+
+interface Props {
+  kind: EvidenceKind;
+}
+
+const { kind } = Astro.props;
+const slug = kind.toLowerCase().replaceAll(' ', '-');
+---
+
+<span class={`evidence-badge evidence-${slug}`}>{kind}</span>

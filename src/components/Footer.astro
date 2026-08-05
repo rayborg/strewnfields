@@ -1,0 +1,28 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<footer class="site-footer">
+  <div>
+    <p class="footer-label">Field ledger · Release 01</p>
+    <p>
+      A public, source-led record of where meteorite evidence comes from and what it can
+      support.
+    </p>
+  </div>
+  <div>
+    <p class="footer-label">Read</p>
+    <p><a href={`${base}methodology/`}>Evidence method</a></p>
+    <p><a href={`${base}sources/`}>Source register</a></p>
+    <p><a href={`${base}membership/`}>Membership preview</a></p>
+  </div>
+  <div>
+    <p class="footer-label">Use carefully</p>
+    <p>Coordinates do not grant access or collecting permission.</p>
+    <p>
+      <a href="https://github.com/rayborg/strewnfields/blob/main/DATA_RIGHTS.md"
+        >Data rights</a
+      >
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Record not found · Strewnfields"
+  description="The requested Strewnfields page was not found."
+>
+  <div class="page-shell prose">
+    <p class="eyebrow">Ledger gap · 404</p>
+    <h1>Nothing is recorded here.</h1>
+    <p class="lede">
+      The route may have changed, or the record has not entered the public catalogue.
+    </p>
+    <a class="button" href={`${base}explore/`}>Return to the catalogue</a>
+  </div>
+</BaseLayout>

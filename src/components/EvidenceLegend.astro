@@ -1,0 +1,8 @@
+---
+import { evidenceKinds } from '../data/schema';
+import EvidenceBadge from './EvidenceBadge.astro';
+---
+
+<div class="legend" aria-label="Evidence type legend">
+  {evidenceKinds.map((kind) => <EvidenceBadge kind={kind} />)}
+</div>
