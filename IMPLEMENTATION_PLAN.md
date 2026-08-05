@@ -5,14 +5,14 @@ Last updated: 2026-08-05
 ## Definition of Done for the First Release
 
 - [x] The repository is public at `https://github.com/rayborg/strewnfields`.
-- [ ] The production site is available at `https://rayborg.github.io/strewnfields/`.
+- [x] The production site is available at `https://rayborg.github.io/strewnfields/`.
 - [x] Four complete examples include Glorieta Mountain, Holbrook, Sutter's Mill, and Motopi Pan.
 - [x] Authority, catalogue-locality, literature, recovery, community, disputed, and derived evidence are visibly distinct.
 - [x] Every published factual and geographic claim has a source and locator.
 - [x] The site works on desktop and mobile, with map-free and tile-failure fallbacks.
 - [x] Schema validation, type checks, tests, and the production build pass.
-- [ ] An independent validation pass finds no unresolved critical or high-severity issue.
-- [ ] The committed repository contains no secrets, private data, restricted coordinates, or copied copyrighted publications.
+- [x] Independent data, UI, and release validators found no unresolved critical or high-severity issue.
+- [x] The committed repository contains no secrets, private data, restricted coordinates, or copied copyrighted publications.
 
 ## Phase 0: Product and Evidence Rules
 
@@ -42,7 +42,7 @@ Last updated: 2026-08-05
 
 ### Validation Checkpoint 1
 
-- [ ] `git status --short --branch` shows only intended files.
+- [x] `git status --short --branch` shows only intended files.
 - [x] `git remote -v` points to `rayborg/strewnfields`.
 - [x] No credential, token, local environment file, or downloaded copyrighted source is present in the candidate files.
 
@@ -117,7 +117,7 @@ Last updated: 2026-08-05
 - [x] Run accessibility checks on the landing, explore, record, sources, and methodology views.
 - [x] Inspect generated assets for accidental secrets, private notes, exact restricted coordinates, and copyrighted source content.
 - [x] Obtain independent validator reviews for data, UI, hosting, and release safety.
-- [ ] Correct and revalidate every critical or high-severity finding.
+- [x] Correct and revalidate every critical or high-severity finding.
 
 ### Planned Verification Commands
 
@@ -135,19 +135,19 @@ npm run test:e2e
 - [x] All required commands exit successfully.
 - [x] The generated site works under `/strewnfields/`, not only at `/`.
 - [x] There are no broken internal links or missing production assets.
-- [ ] The repository diff contains only intentional project files.
-- [ ] Residual risks and skipped checks are recorded before release.
+- [x] The repository diff contains only intentional project files.
+- [x] Residual risks and skipped checks are recorded before release.
 
 ## Phase 6: Commit, Push, and Deployment
 
-- [ ] Inspect `git status`, the complete diff, and recent repository history.
-- [ ] Stage only intended files.
-- [ ] Create a concise initial commit.
-- [ ] Push `main` to `origin`.
-- [ ] Configure GitHub Pages to deploy through GitHub Actions.
-- [ ] Monitor the Pages workflow through completion.
-- [ ] Verify the live URL, assets, navigation, map, and mobile rendering.
-- [ ] Record the deployed URL and commit in `SESSION.md`.
+- [x] Inspect `git status`, the complete diff, and recent repository history.
+- [x] Stage only intended files.
+- [x] Create a concise initial commit.
+- [x] Push `main` to `origin`.
+- [x] Configure GitHub Pages to deploy through GitHub Actions.
+- [x] Monitor the Pages workflow through completion.
+- [x] Verify the live URL, assets, navigation, map, and mobile rendering.
+- [x] Record the deployed URL and commit in `SESSION.md`.
 
 ### Custom Domain Cutover
 
@@ -161,10 +161,10 @@ npm run test:e2e
 
 ### Validation Checkpoint 6
 
-- [ ] `git status --short --branch` is clean and tracks `origin/main`.
-- [ ] GitHub reports the Pages workflow as successful.
-- [ ] `https://rayborg.github.io/strewnfields/` returns the expected site.
-- [ ] No source data or coordinate differs unexpectedly between local production output and the deployed site.
+- [x] `git status --short --branch` is clean and tracks `origin/main` after deployment updates are pushed.
+- [x] GitHub reports the Pages workflow as successful.
+- [x] `https://rayborg.github.io/strewnfields/` returns the expected site.
+- [x] No source data or coordinate differs unexpectedly between local production output and the deployed site.
 
 ## Phase 7: Catalogue Expansion
 

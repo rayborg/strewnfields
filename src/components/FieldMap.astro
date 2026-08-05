@@ -89,7 +89,7 @@ const titleId = `map-title-${compact ? 'catalogue' : mapData[0]?.recordId || 're
       <p class="field-label">Location record</p>
       <h2 id={titleId}>Public points withheld</h2>
       <p>{emptyMessage}</p>
-      {mapNote && <p class="fine-print">{mapNote}</p>}
+      {mapNote && mapNote !== emptyMessage && <p class="fine-print">{mapNote}</p>}
     </aside>
   )
 }

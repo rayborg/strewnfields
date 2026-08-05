@@ -15,7 +15,10 @@ The project must distinguish authoritative catalogue information, published reco
 - Repository visibility: public
 - Default branch: `main`
 - Git is initialized and the `origin` remote is configured.
-- No commit has been created yet.
+- Initial release commit: `bcac844640a2d702800ce57455271da4c7cbce55`.
+- The initial release is pushed to `origin/main`.
+- GitHub Pages is live at `https://rayborg.github.io/strewnfields/`.
+- Deployment workflow run `31036917154` completed successfully.
 - The user supplied `glorieta_mountain_strewnfield_maps.md` as the first source inventory.
 - The public catalogue contains Glorieta Mountain, Holbrook, Sutter's Mill, and Motopi Pan.
 - All local format, type, data, build, and static smoke checks pass.
@@ -163,3 +166,5 @@ Principal Glorieta references include:
 - Added source-specific rights notes and complete browser-bundle third-party software notices.
 - Ran independent data, UI, safety, hosting, and release reviews and corrected their blocking findings.
 - Confirmed `strewnfields.com` is registered at Porkbun and selected GitHub Pages as the free host for the public informational preview.
+- Committed and pushed initial release `bcac844`.
+- Enabled GitHub Pages through GitHub Actions and verified all public pages, records, assets, notices, robots, sitemap, and custom 404 behavior.
